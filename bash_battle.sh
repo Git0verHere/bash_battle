@@ -32,10 +32,10 @@ getLine
 gameOptions() {
 # Game Options
 echo ""
-echo "Welcome Tarnished. Please select your starting class:"
-echo " 1 - Knight"
-echo " 2 - Prisoner"
-echo " 3 - Mage"
+echo "Welcome Player. Please select your starting class:"
+echo " 1 - Knight (HP: 20, ATTACK: 20, STAMINA: 20)"
+echo " 2 - Prisoner (HP: 10, ATTACK: 4, STAMINA: 30)"
+echo " 3 - Mage (HP: 15, ATTACK: 8, STAMINA: 20)"
 
 read CLASS
 
@@ -54,20 +54,20 @@ case $CLASS in
 		;;
 	3)
 		TYPE="Mage"
-		MAXHP=20
-		MAXATTACK=4
-		MAXSTAMINA=30
+		MAXHP=15
+		MAXATTACK=8
+		MAXSTAMINA=20
 		;;
 esac
 
 # Set game variables
 MAXTURNS=10
 RECOVERY=4
-HPRECOVERY=2
+HPRECOVERY=4
 FIGHTDAMAGE=5
-FIGHTSTAMINA=4
-RUNAWAY=2
-TRAVELWEAR=5
+FIGHTSTAMINA=2
+RUNAWAY=1
+TRAVELWEAR=2
 STAGE=0
 
 # Set player values

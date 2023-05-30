@@ -125,6 +125,11 @@ echo "Press any key to continue."
 read KEY
 }
 
+#
+updateTripCounter() {
+TURNS=$(( $TURNS - 1 ))
+}
+
 # Enforce maximum stat values
 checkLimit() {
 if [[ $STAMINA -gt $MAXSTAMINA ]]; then
@@ -214,7 +219,9 @@ echo "${MAPBOT}"
 
 # Display player HUD
 displayHUD() {
+getLine
 echo "Stats: | Health:"$HP"| Stamina:"$STAMINA"| Trips Left:"$TURNS"|"
+getLine
 }
 
 # Get player response to enemy
@@ -335,13 +342,12 @@ if [[ $TURNS -lt $MAXTURNS ]]; then
 	read DECISION
 else
 	echo "We've a long way to go, $TYPE."
-	DECISION=c
+        echo "Press c to continue."
+        read DECISION
 fi
 
 if [[ $DECISION == c ]]; then
-        displayTurn
-        STAMINA=$(( $STAMINA - $TRAVELWEAR ))
-	TURNS=$(( $TURNS - 1 ))
+         STAMINA=$(( $STAMINA - $TRAVELWEAR ))
 else
         STAMINA=$(( $STAMINA + $RECOVERY ))
 	HP=$(( $HP + $HPRECOVERY ))
@@ -357,18 +363,19 @@ gameTitle
 gameOptions
 playerInfo
 echo "Loading game ..."
-sleep 4
+sleep 2
+echo "Press any key to continue."
+read KEY
 clear
 animation_ship
 startMsg
 clear
 while [[ $HP -gt 0 && $STAMINA -gt 0 && $TURNS -gt 0 ]];
 do
-#	clear
-	getLine
 	displayHUD
-	getLine
-	nextTrip
+        displayTurn
+        nextTrip
+        updateTripCounter
 done
 
 if [[ $HP -gt 0 && $STAMINA -gt 0 ]]; then

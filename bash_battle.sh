@@ -10,20 +10,20 @@ orange=$(tput setaf 214)
 reset=$(tput sgr0)
 
 getLine() {
-printf "${red}${bold}***********************************************${reset}\n"
+printf "${red}${bold}***************************************************${reset}\n"
 }
 
 lineSpace() {
-printf "${red}${bold}*                                             *${reset}\n"
+printf "${red}${bold}*                                                 *${reset}\n"
 }
 
 gameTitle() {
 getLine
 getLine
 lineSpace
-printf "${red}${bold}*${reset} ${green}${bold}              BASH BATTLE ${reset}${red}${bold}                  *${reset}\n"
+printf "${red}${bold}*${reset} ${green}${bold}                BASH BATTLE   ${reset}${red}${bold}                  *${reset}\n"
 lineSpace
-printf "${red}${bold}*${reset}      copyright - Joseph Johnston, 2022 ${red}${bold}     *${reset}\n"
+printf "${red}${bold}*${reset}        copyright - Joseph Johnston, 2022   ${red}${bold}     *${reset}\n"
 lineSpace
 getLine
 getLine
@@ -111,14 +111,14 @@ printf "\r##########################################\n"
 
 startMsg() {
 getLine
-echo "${red}${bold}* Your ship has arrived at port, welcome!     *${reset}"
-echo "${red}${bold}* Your quest is to survive the trip home, but *${reset}"
-echo "${red}${bold}* there will be perils along the way. BEWARE! *${reset}"
-echo "${red}${bold}* Bandits, beasts, and the land itself has it *${reset}"
-echo "${red}${bold}* out for you. Good luck on your journey!     *${reset}"
+echo "${red}${bold}*   Your ship has arrived at port, welcome!       *${reset}"
+echo "${red}${bold}*   Your quest is to survive the trip home, but   *${reset}"
+echo "${red}${bold}*   there will be perils along the way. BEWARE!   *${reset}"
+echo "${red}${bold}*   Bandits, beasts, and the land itself has it   *${reset}"
+echo "${red}${bold}*   out for you. Good luck on your journey!       *${reset}"
 lineSpace
-echo "${red}${bold}* Your destination is only $TURNS trips away.     *${reset}"
-echo "${red}${bold}* So, let's begin...                          *${reset}"
+echo "${red}${bold}*   Your destination is only $TURNS trips away.       *${reset}"
+echo "${red}${bold}*   So, let's begin...                            *${reset}"
 getLine
 echo ""
 echo "Press any key to continue."
@@ -220,7 +220,13 @@ echo "${MAPBOT}"
 # Display player HUD
 displayHUD() {
 getLine
-echo "Stats: | Health:"$HP"| Stamina:"$STAMINA"| Trips Left:"$TURNS"|"
+echo "Stats: | Health:"$HP" | Stamina:"$STAMINA" | Trips Left:"$TURNS" |"
+getLine
+echo "${red}${bold}**${reset} If Continue:    | If Rest:   | If Fight:      ${red}${bold}**${reset}"
+lineSpace
+echo "${red}${bold}**${reset} -"$TRAVELWEAR" Stamina      | +"$RECOVERY" Stamina | -"$FIGHTSTAMINA" Stamina (f) ${red}${bold}**${reset}"
+echo "${red}${bold}**${reset} -0 HP           | +"$HPRECOVERY" HP      | -"$FIGHTDAMAGE" HP      (f) ${red}${bold}**${reset}"
+echo "${red}${bold}**${reset} "$MAXSTAMINA" Max Stamina  | "$MAXHP" Max HP  | -"$RUNAWAY" Stamina (r) ${red}${bold}**${reset}"
 getLine
 }
 
@@ -273,8 +279,6 @@ echo "***********************"
 echo "   Round $ROUND. Fight!"
 echo "***********************"
 echo ""
-
-displayHUD
 
 # Wait until player is ready to continue
 echo "Press any key to continue."
@@ -368,6 +372,7 @@ echo "Press any key to continue."
 read KEY
 clear
 animation_ship
+sleep 2
 startMsg
 clear
 while [[ $HP -gt 0 && $STAMINA -gt 0 && $TURNS -gt 0 ]];

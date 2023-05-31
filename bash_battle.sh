@@ -69,6 +69,7 @@ FIGHTSTAMINA=2
 RUNAWAY=1
 TRAVELWEAR=2
 STAGE=0
+TRIPFLAG=true
 
 # Set player values
 HP=$(( $MAXHP ))
@@ -352,12 +353,12 @@ fi
 
 if [[ $DECISION == c ]]; then
          STAMINA=$(( $STAMINA - $TRAVELWEAR ))
+         detectOpponents
 else
         STAMINA=$(( $STAMINA + $RECOVERY ))
 	HP=$(( $HP + $HPRECOVERY ))
 	checkLimit
 fi
-detectOpponents
 }
 
 # Starting location always the same, but need alternate routes
@@ -380,7 +381,9 @@ do
 	displayHUD
         displayTurn
         nextTrip
-        updateTripCounter
+        if [[ $TRIPFLAG = true ]]; then
+                updateTripCounter
+        fi
 done
 
 if [[ $HP -gt 0 && $STAMINA -gt 0 ]]; then

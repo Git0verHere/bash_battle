@@ -68,7 +68,7 @@ FIGHTDAMAGE=5
 FIGHTSTAMINA=2
 RUNAWAY=1
 TRAVELWEAR=2
-STAGE=0
+STAGE=1
 TRIPFLAG=true
 
 # Set player values
@@ -129,6 +129,7 @@ read KEY
 #
 updateTripCounter() {
 TURNS=$(( $TURNS - 1 ))
+STAGE=$(( $STAGE + 1 ))
 }
 
 # Enforce maximum stat values
@@ -142,7 +143,6 @@ fi
 }
 
 displayTurn() {
-STAGE=$(( $STAGE + 1 ))
 case $STAGE in
         1)
                 LEVEL="## level-01 ##"
@@ -354,10 +354,12 @@ fi
 if [[ $DECISION == c ]]; then
          STAMINA=$(( $STAMINA - $TRAVELWEAR ))
          detectOpponents
+         TRIPFLAG=true
 else
         STAMINA=$(( $STAMINA + $RECOVERY ))
 	HP=$(( $HP + $HPRECOVERY ))
 	checkLimit
+        TRIPFLAG=false
 fi
 }
 

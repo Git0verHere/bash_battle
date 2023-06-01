@@ -390,6 +390,7 @@ done
 
 if [[ $HP -gt 0 && $STAMINA -gt 0 ]]; then
 	echo "Congratualtions, you made it home!"
+        displayTurn
 else
 	echo "You lose! Game Over."
 fi

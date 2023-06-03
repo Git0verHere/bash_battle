@@ -70,6 +70,9 @@ RUNAWAY=1
 TRAVELWEAR=2
 STAGE=1
 TRIPFLAG=true
+PLAYER_DODGE=false
+OPPONENT_DODGE=false
+WIN=false
 
 # Set player values
 HP=$(( $MAXHP ))
@@ -110,6 +113,12 @@ done
 printf "\r##########################################\n"
 }
 
+# Function to get player input to continue
+get_player_input() {
+echo "Press any key to continue."
+read KEY
+}
+
 startMsg() {
 getLine
 echo "${red}${bold}*   Your ship has arrived at port, welcome!       *${reset}"
@@ -122,8 +131,7 @@ echo "${red}${bold}*   Your destination is only $TURNS trips away.       *${rese
 echo "${red}${bold}*   So, let's begin...                            *${reset}"
 getLine
 echo ""
-echo "Press any key to continue."
-read KEY
+get_player_input
 }
 
 #
@@ -270,6 +278,48 @@ TMPHP=$(( $RANDOM % $OMAXHP + 1 ))
 TMPATTACK=$(( $RANDOM % $OMAXATTACK + 1 ))
 }
 
+# Function to animate player dodge
+animate_player_dodge() {
+echo "player dodge animation here"
+sleep 1
+}
+
+# Function to animate player hit
+animate_player_hit() {
+echo "player hit animation here"
+sleep 1
+}
+
+# Function to animate opponent dodge
+animate_opponent_dodge() {
+echo "opponent dodge animation here"
+sleep 1
+}
+
+# Function to animate opponent hit
+animate_opponent_hit() {
+echo "opponent hit animation here"
+sleep 1
+}
+
+# FUnction to animate fight victory
+animate_win() {
+echo "victory animation here"
+sleep 1
+}
+
+# Function to animate fight defeat
+animate_loss() {
+echo "defeat animation here"
+sleep 1
+}
+
+# Function to animate player runaway
+animation_runaway() {
+echo "runaway animation here"
+sleep 1
+}
+
 # Function to simulate battle with opponent
 readyRumble() {
 ROUND=0
@@ -281,27 +331,31 @@ echo "   Round $ROUND. Fight!"
 echo "***********************"
 echo ""
 
-# Wait until player is ready to continue
-echo "Press any key to continue."
-read KEY
+get_player_input
 
 DODGE=$(( $RANDOM % 2 )) # Calculate probability of dodge
 if [[ $DODGE == 1 ]]; then
+        PLAYER_DODGE=true
+        animate_player_dodge
 	echo "You dodged! No damage taken."
 else
+        PLAYER_DODGE=false
         HP=$(( $HP - $TMPATTACK ))
+        animate_player_hit
 	echo "You took $TMPATTACK damage!"
 fi
 
-# Wait until player is ready to continue
-echo "Press any key to continue."
-read KEY
+get_player_input
 
 DODGE=$(( $RANDOM % 3 )) # Calculate opponent probability of dodge
 if [[ $DODGE == 1 ]]; then
+        OPPONENT_DODGE=true
+        animate_opponent_dodge
 	echo "You missed! No damage to opponent."
 else
-	TMPHP=$(( $TMPHP - $ATTACK ))
+	OPPONENT_DODGE=false
+        TMPHP=$(( $TMPHP - $ATTACK ))
+        animate_opponent_hit
 	echo "You dealt $ATTACK damage! $OTYPE has $TMPHP remaining HP."
 fi
 echo " "
@@ -311,9 +365,13 @@ echo " "
 done
 	STAMINA=$(( $STAMINA - $FIGHTSTAMINA ))
 if [[ $HP -gt 0 && $STAMINA -gt 0 ]]; then
-	echo "VICTORIOUS! You defeated the $OTYPE."
+        WIN=true
+        echo "VICTORIOUS! You defeated the $OTYPE."
+        animate_win
 else
-	echo "You died...what a pathetic loser!"
+	WIN=false
+        echo "You died...what a pathetic loser!"
+        animate_loss
 fi
 }
 
@@ -325,6 +383,8 @@ echo "You determine the $OTYPE has $TMPHP HP and $TMPATTACK Attack."
 getResponse
 if [[ $RESPONSE == f ]]; then
         readyRumble
+else
+        animation_runaway
 fi
 }
 
@@ -371,8 +431,7 @@ gameOptions
 playerInfo
 echo "Loading game ..."
 sleep 2
-echo "Press any key to continue."
-read KEY
+get_player_input
 clear
 animation_ship
 sleep 2
@@ -386,6 +445,8 @@ do
         if [[ $TRIPFLAG = true ]]; then
                 updateTripCounter
         fi
+        get_player_input
+        clear
 done
 
 if [[ $HP -gt 0 && $STAMINA -gt 0 ]]; then
